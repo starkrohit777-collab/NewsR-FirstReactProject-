@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Navbar from "./Components/Navbar";
-import Home from "./Components/Pages/home";
+import Home from "./Components/pages/Home";
 
 function App() {
   const [category, setCategory] = useState("general");

@@ -92,7 +92,7 @@ body {
 ========================= */
 
 h2.text-center {
-  text-align: center;
+  text-align: left;
   margin: 40px 0 30px;
 
   position: relative;
@@ -110,10 +110,135 @@ h2.text-center::after {
   display: block;
   width: 60px;
   height: 3px;
-  margin: 14px auto 0;
+  margin: 18px 0 0 130px;
   background: #8b2635;
 }
 
+/* =========================
+   SEARCH BAR
+========================= */
+
+.news-heading-row {
+  max-width: 1320px;
+  margin: 40px auto 30px;
+  padding: 0 30px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 25px;
+}
+
+.news-heading-row h2.text-center {
+  margin: 0;
+  flex: 1;
+}
+
+/* Search Container */
+.search-box {
+  display: flex;
+  align-items: center;
+
+  width: 280px;
+  height: 42px;
+
+  background: #fffdf8;
+  border: 1px solid #cfc6b5;
+  border-radius: 4px;
+
+  overflow: hidden;
+
+  transition: 0.25s ease;
+}
+
+.search-box:focus-within {
+  border-color: #8b2635;
+  box-shadow: 0 0 0 2px rgba(139, 38, 53, 0.08);
+}
+
+/* Search Input */
+.search-input {
+  width: 100%;
+  height: 100%;
+
+  padding: 0 14px;
+
+  border: none;
+  outline: none;
+
+  background: transparent;
+
+  color: #1c1a17;
+
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 13px;
+}
+
+.search-input::placeholder {
+  color: #8a8377;
+}
+
+/* Search Button */
+.search-button {
+  height: 100%;
+  width: 48px;
+
+  border: none;
+  border-left: 1px solid #ddd5c3;
+
+  background: transparent;
+
+  color: #8b2635;
+
+  cursor: pointer;
+
+  font-size: 17px;
+
+  transition: 0.25s ease;
+}
+
+.search-button:hover {
+  background: #8b2635;
+  color: #f6f2ea;
+}
+
+
+/* =========================
+   SEARCH RESPONSIVE
+========================= */
+
+@media (max-width: 768px) {
+
+  .news-heading-row {
+    flex-direction: column;
+    align-items: stretch;
+
+    padding: 0 20px;
+    gap: 18px;
+  }
+
+  .news-heading-row h2.text-center {
+    margin: 0;
+  }
+
+  .search-box {
+    width: 100%;
+  }
+
+}
+
+
+@media (max-width: 480px) {
+
+  .news-heading-row {
+    padding: 0 15px;
+  }
+
+  .search-box {
+    height: 40px;
+  }
+
+}
 
 /* =========================
    NEWS GRID
@@ -487,3 +612,110 @@ h2.text-center::after {
   }
 
 }
+
+/* =========================
+   FOOTER
+========================= */
+
+.news-footer {
+  width: 100%;
+  margin-top: 70px;
+
+  background: #1c1a17;
+  color: #f6f2ea;
+
+  border-top: 3px double #8b2635;
+}
+
+.footer-content {
+  max-width: 1320px;
+  margin: auto;
+
+  padding: 45px 30px 25px;
+
+  text-align: center;
+}
+
+/* Brand */
+
+.footer-brand h3 {
+  margin: 0;
+
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 30px;
+  font-weight: 900;
+  font-style: italic;
+
+  letter-spacing: -0.5px;
+}
+
+.footer-brand p {
+  margin: 8px 0 0;
+
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 12px;
+
+  color: #bdb5a6;
+
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+/* Line */
+
+.footer-line {
+  width: 100%;
+  height: 1px;
+
+  background: #4a463e;
+
+  margin: 30px 0 20px;
+}
+
+/* Bottom */
+
+.footer-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 20px;
+}
+
+.footer-bottom p {
+  margin: 0;
+
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 11px;
+
+  color: #a9a296;
+
+  letter-spacing: 0.04em;
+}
+
+.footer-bottom span {
+  color: #c49b42;
+}
+
+
+/* =========================
+   FOOTER MOBILE
+========================= */
+
+@media (max-width: 600px) {
+
+  .footer-content {
+    padding: 35px 20px 22px;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .footer-brand h3 {
+    font-size: 26px;
+  }
+
+}
+

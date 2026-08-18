@@ -6,7 +6,10 @@ export default function Home({ category = "" }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  const fetchNews = async () => {
+  // 🔎 Search
+  const [search, setSearch] = useState("");
+
+  const fetchNews = async (searchQuery = "") => {
     try {
       setLoading(true);
       setError("");
@@ -17,11 +20,23 @@ export default function Home({ category = "" }) {
         throw new Error("API key not found");
       }
 
-      const url = category
-        ? `https://api.currentsapi.services/v1/latest-news?language=en&category=${encodeURIComponent(
-            category
-          )}`
-        : `https://api.currentsapi.services/v1/latest-news?language=en`;
+      let url;
+
+      // 🔎 SEARCH API
+      if (searchQuery.trim()) {
+        url = `https://api.currentsapi.services/v1/search?keywords=${encodeURIComponent(
+          searchQuery
+        )}&language=en`;
+      }
+
+      // 📰 NORMAL LATEST NEWS API
+      else {
+        url = category
+          ? `https://api.currentsapi.services/v1/latest-news?language=en&category=${encodeURIComponent(
+              category
+            )}`
+          : `https://api.currentsapi.services/v1/latest-news?language=en`;
+      }
 
       const response = await fetch(url, {
         method: "GET",
@@ -55,63 +70,180 @@ export default function Home({ category = "" }) {
     }
   };
 
+  // Category change hone par latest news fetch
   useEffect(() => {
+    setSearch("");
     fetchNews();
   }, [category]);
 
+  // 🔎 Search submit
+  const handleSearch = (e) => {
+    e.preventDefault();
+
+    if (search.trim()) {
+      fetchNews(search.trim());
+    } else {
+      fetchNews();
+    }
+  };
+
+  // ❌ Search clear
+  const handleClearSearch = () => {
+    setSearch("");
+    fetchNews();
+  };
+
   return (
-    <main className="container my-4">
+    <>
+      <main className="container my-4">
 
-      <h2 className="text-center mb-4">
-        Latest {category || "General"} News
-      </h2>
+        {/* Heading + Search */}
+        <div className="news-heading-row">
 
-      {/* Loading */}
-      {loading && (
-        <div className="loading-box text-center">
-          <div className="spinner-border" role="status">
-            <span className="visually-hidden">
-              Loading...
-            </span>
+          <h2 className="text-center mb-4">
+            {search
+              ? `Search Results for "${search}"`
+              : `Latest ${category || "General"} News`}
+          </h2>
+
+          <form
+            className="search-box"
+            onSubmit={handleSearch}
+          >
+
+            <input
+              type="text"
+              className="search-input"
+              placeholder="Search news..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+
+            {/* Clear Button */}
+            {search && (
+              <button
+                type="button"
+                className="search-clear"
+                onClick={handleClearSearch}
+              >
+                ✕
+              </button>
+            )}
+
+            {/* Search Button */}
+            <button
+              className="search-button"
+              type="submit"
+            >
+              🔍
+            </button>
+
+          </form>
+
+        </div>
+
+        {/* Loading */}
+        {loading && (
+          <div className="loading-box text-center">
+
+            <div className="spinner-border" role="status">
+              <span className="visually-hidden">
+                Loading...
+              </span>
+            </div>
+
+            <p>Loading news...</p>
+
+          </div>
+        )}
+
+        {/* Error */}
+        {!loading && error && (
+          <div className="alert alert-danger text-center">
+
+            <p className="mb-3">
+              {error}
+            </p>
+
+            <button
+              className="btn btn-primary"
+              onClick={() =>
+                search ? fetchNews(search) : fetchNews()
+              }
+            >
+              Try Again
+            </button>
+
+          </div>
+        )}
+
+        {/* News */}
+        {!loading && !error && (
+          <div className="news-grid">
+
+            {news.length > 0 ? (
+
+              news.map((article, index) => (
+
+                <NewsCard
+                  key={article.id || article.url || index}
+                  article={article}
+                />
+
+              ))
+
+            ) : (
+
+              <p className="no-news">
+                {search
+                  ? `No news found for "${search}".`
+                  : "No news found."}
+              </p>
+
+            )}
+
+          </div>
+        )}
+
+      </main>
+
+
+      {/* =========================
+          FOOTER
+      ========================= */}
+
+      <footer className="news-footer">
+
+        <div className="footer-content">
+
+          <div className="footer-brand">
+
+            <h3>NewsR</h3>
+
+            <p>
+              Stay informed. Stay ahead.
+            </p>
+
           </div>
 
-          <p>Loading news...</p>
-        </div>
-      )}
+          <div className="footer-line"></div>
 
-      {/* Error */}
-      {!loading && error && (
-        <div className="alert alert-danger text-center">
-          <p className="mb-3">{error}</p>
+          <div className="footer-bottom">
 
-          <button
-            className="btn btn-primary"
-            onClick={fetchNews}
-          >
-            Try Again
-          </button>
-        </div>
-      )}
-
-      {/* News */}
-      {!loading && !error && (
-        <div className="news-grid">
-          {news.length > 0 ? (
-            news.map((article, index) => (
-              <NewsCard
-                key={article.id || article.url || index}
-                article={article}
-              />
-            ))
-          ) : (
-            <p className="no-news">
-              No news found.
+            <p>
+              © 2026 NewsR. All Rights Reserved.
             </p>
-          )}
-        </div>
-      )}
 
-    </main>
+            <p>
+              Powered by <span>Currents API</span>
+            </p>
+
+          </div>
+
+        </div>
+
+      </footer>
+
+    </>
   );
 }
-

@@ -1,15 +1,34 @@
-import React, { useState } from "react";
+import React from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
 import Navbar from "./Components/Navbar";
 import Home from "./Components/pages/Home";
+import ArticleDetails from "./Components/pages/ArticleDetails";
 
 function App() {
-  const [category, setCategory] = useState("general");
-
   return (
-    <>
-      <Navbar setCategory={setCategory} />
-      <Home category={category} />
-    </>
+    <BrowserRouter>
+      <Navbar />
+
+      <Routes>
+
+        {/* Home */}
+        <Route path="/" element={<Home />} />
+
+        {/* Category Routes */}
+        <Route
+          path="/category/:category"
+          element={<Home />}
+        />
+
+        {/* Dynamic Article Route */}
+        <Route
+          path="/article/:id"
+          element={<ArticleDetails />}
+        />
+
+      </Routes>
+    </BrowserRouter>
   );
 }
 

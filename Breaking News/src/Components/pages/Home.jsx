@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import NewsCard from "../NewsCard";
 
-export default function Home({ category = "" }) {
+export default function Home() {
+  const { category } = useParams();
   const [news, setNews] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
